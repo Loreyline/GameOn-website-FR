@@ -27,7 +27,6 @@ modalClose.addEventListener("click", close);
 
 function close() {
   modalbg.style.display = "none";
-  modalSucces.style.display = "none";
 }
 
 
@@ -153,7 +152,14 @@ const succesClose = document.querySelector(".succes-close");
 
 succesClose.addEventListener("click", closeSucces);
 
+// ou utilisation de la croix de la modale pour la fermer
+
+const validClose = document.querySelector(".valid-close");
+
+validClose.addEventListener("click", closeSucces);
+
 function closeSucces() {
   modalSucces.style.display = "none";
 }
+
 
