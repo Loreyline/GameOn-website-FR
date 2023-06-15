@@ -12,7 +12,7 @@ const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
 const modalClose = document.querySelector(".btnClose");
-const modalSucces = document.querySelector(".validation");
+const modalSucces = document.querySelector(".succes");
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -22,11 +22,12 @@ function launchModal() {
   modalbg.style.display = "block";
 }
 
-//fermeture modal
+//fermeture des modales 
 modalClose.addEventListener("click", close);
 
 function close() {
   modalbg.style.display = "none";
+  modalSucces.style.display = "none";
 }
 
 
@@ -48,61 +49,73 @@ let erreurBirthdate = document.getElementById('erreurBirthdate');
 let birthdateValid = /^[0-9]{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])/;
 let quantity = document.getElementById('quantity');//nombre de tournois précédents
 let erreurQuantity = document.getElementById('erreurQuantity');
-let quantityValid = /^[0-9]+([0-9]+)?/;
+let quantityValid = /^[0-9]+([0-9])?/;
 let lieu = document.querySelectorAll("[name='location']");//endroit ou veux participer le candidat
 let erreurLocation = document.getElementById('erreurLocation');
 let checkbox1 = document.getElementById('checkbox1');//validation des CGU
 let erreurConditions = document.getElementById('erreurConditions');
+let valid = true;//vérification de la validité du formulaire
 
 validation.addEventListener("click", valider);
 
 //fonction validation données formilaire
 function valider(event) {
+  event.preventDefault();
 
   //validation prénom
   if (prenom.value === "") {
-    event.preventDefault();
     erreurPrenom.textContent = "Merci de renseigner votre prénom";
+    valid = false;
   } else if (prenomValid.test(prenom.value) == false) {
-    event.preventDefault();
-    erreurPrenom.textContent = " Format du prénom non valide";
-  };
+    erreurPrenom.textContent = "Format du prénom non valide";
+    valid = false;
+  } else {
+    erreurPrenom.textContent = "";
+  }
 
   //validation nom
   if (nom.value === "") {
-    event.preventDefault();
-    erreurNom.textContent = " Merci de renseigner votre nom";
+    erreurNom.textContent = "Merci de renseigner votre nom";
+    valid = false;
   } else if (nomValid.test(nom.value) == false) {
-    event.preventDefault();
-    erreurNom.textContent = " Format du nom non valide";
-  };
+    erreurNom.textContent = "Format du nom non valide";
+    valid = false;
+  } else {
+    erreurNom.textContent = "";
+  }
 
   //validation email
   if (email.value === "") {
-    event.preventDefault();
-    erreurMail.textContent = " Merci de renseigner votre mail";
+    erreurMail.textContent = "Merci de renseigner votre mail";
+    valid = false;
   } else if (emailValid.test(email.value) == false) {
-    event.preventDefault();
-    erreurMail.textContent = " Format de l'email non valide";
-  };
+    erreurMail.textContent = "Format de l'email non valide";
+    valid = false;
+  } else {
+    erreurMail.textContent = "";
+  }
 
   //validation date de naissance
   if (birthdate.value === "") {
-    event.preventDefault();
-    erreurBirthdate.textContent = " Merci de renseigner votre date de naissance";
+    erreurBirthdate.textContent = "Merci de renseigner votre date de naissance";
+    valid = false;
   } else if (birthdateValid.test(birthdate.value) == false) {
-    event.preventDefault();
-    erreurBirthdate.textContent = " jjmmaaaa";
-  };
+    erreurBirthdate.textContent = "jj/mm/aaaa";
+    valid = false;
+  } else {
+    erreurBirthdate.textContent = "";
+  }
 
   //validation nombre de tournois passés
   if (quantity.value === "") {
-    event.preventDefault();
-    erreurQuantity.textContent = " Merci de renseigner le nombre de tournois auquels vous avez participé dans le passé";
+    erreurQuantity.textContent = "Merci de renseigner le nombre de tournois auquels vous avez participé dans le passé";
+    valid = false;
   } else if (quantityValid.test(quantity.value) == false) {
-    event.preventDefault();
-    erreurQuantity.textContent = "Merci de renseigner un nombre";
-  };
+    erreurQuantity.textContent = "Merci de renseigner un nombre valide entre 0 et 99";
+    valid = false;
+  } else {
+    erreurQuantity.textContent = "";
+  }
 
   //validation de la localisation du tournoi
   let lieuChecked = false;
@@ -111,21 +124,36 @@ function valider(event) {
       lieuChecked = true;
       break;
     }
-  };
+  }
 
   if (!lieuChecked) {
-    event.preventDefault();
-    erreurLocation.textContent = "Merci de choisir un lieu pour votre inscription au tournois"
-  };
+    erreurLocation.textContent = "Merci de choisir un lieu pour votre inscription au tournois";
+    valid = false;
+  } else {
+    erreurLocation.textContent = "";
+  }
 
   //validation CGU
   if (!checkbox1.checked) {
-    event.preventDefault();
-    erreurConditions.textContent = " Merci de valider les conditions générales d'utilisation";
-  };
+    erreurConditions.textContent = "Merci de valider les conditions générales d'utilisation";
+    valid = false;
+  } else {
+    erreurConditions.textContent = "";
+  }
 
   //ouverture de la modal succes
+  if (valid === true) {
+    modalSucces.style.display = "block";
+  }
+}
 
-  modalSucces.style.display = "block";
+//utilisation du bouton fermer pour fermer la modal succes
 
-} 
+const succesClose = document.querySelector(".succes-close");
+
+succesClose.addEventListener("click", closeSucces);
+
+function closeSucces() {
+  modalSucces.style.display = "none";
+}
+
