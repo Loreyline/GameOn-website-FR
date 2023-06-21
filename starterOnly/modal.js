@@ -53,14 +53,15 @@ let lieu = document.querySelectorAll("[name='location']");//endroit ou veux part
 let erreurLocation = document.getElementById('erreurLocation');
 let checkbox1 = document.getElementById('checkbox1');//validation des CGU
 let erreurConditions = document.getElementById('erreurConditions');
-let valid = true;//vérification de la validité du formulaire
+let valid;//vérification de la validité du formulaire
+
 
 validation.addEventListener("click", valider);
 
 //fonction validation données formilaire
 function valider(event) {
   event.preventDefault();
-
+  valid = true;
   //validation prénom
   if (prenom.value === "") {
     erreurPrenom.textContent = "Merci de renseigner votre prénom";
@@ -95,13 +96,15 @@ function valider(event) {
   }
 
   //validation date de naissance
+
   if (birthdate.value === "") {
     erreurBirthdate.textContent = "Merci de renseigner votre date de naissance";
     valid = false;
   } else if (birthdateValid.test(birthdate.value) == false) {
     erreurBirthdate.textContent = "jj/mm/aaaa";
     valid = false;
-  } else {
+  }
+  else {
     erreurBirthdate.textContent = "";
   }
 
@@ -143,7 +146,16 @@ function valider(event) {
   //ouverture de la modal succes
   if (valid === true) {
     modalSucces.style.display = "block";
+    prenom.value = "";
+    nom.value = "";
+    email.value = "";
+    birthdate.value = "";
+    quantity.value = "";
+    for (let i = 0; i < lieu.length; i++) {
+      lieu[i] = false;
+    }
   }
+
 }
 
 //utilisation du bouton fermer pour fermer la modal succes
